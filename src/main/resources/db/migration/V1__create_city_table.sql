@@ -1,0 +1,5 @@
+CREATE TABLE city (
+    id IDENTITY NOT NULL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    country_code VARCHAR(255) NOT NULL
+);
