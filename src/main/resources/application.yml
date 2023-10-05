@@ -1,0 +1,13 @@
+server:
+  servlet:
+    context-path: /api
+
+spring:
+  datasource:
+    username: sa
+    password:
+    url: jdbc:h2:mem:forecastdb
+    driverClassName: org.h2.Driver
+  h2:
+    console:
+      enabled: true
