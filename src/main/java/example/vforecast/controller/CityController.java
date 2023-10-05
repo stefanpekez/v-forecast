@@ -1,6 +1,6 @@
 package example.vforecast.controller;
 
-import example.vforecast.model.City;
+import example.vforecast.dto.CityGetDto;
 import example.vforecast.service.CityService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +19,7 @@ public class CityController {
     }
 
     @GetMapping
-    public List<City> findAll() {
+    public List<CityGetDto> findAll() {
         return this.cityService.findAll();
     }
 

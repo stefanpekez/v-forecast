@@ -1,6 +1,7 @@
 package example.vforecast.service.impl;
 
-import example.vforecast.model.City;
+import example.vforecast.dto.CityGetDto;
+import example.vforecast.mapper.CityMapper;
 import example.vforecast.repository.CityRepository;
 import example.vforecast.service.CityService;
 import org.springframework.stereotype.Service;
@@ -16,8 +17,11 @@ public class CityServiceImpl implements CityService {
         this.cityRepository = cityRepository;
     }
 
-    public List<City> findAll() {
-        return this.cityRepository.findAll();
+    public List<CityGetDto> findAll() {
+        return this.cityRepository.findAll()
+                .stream()
+                .map(CityMapper::toDto)
+                .toList();
     }
 
 }
