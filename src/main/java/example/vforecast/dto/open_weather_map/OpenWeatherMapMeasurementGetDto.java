@@ -9,11 +9,11 @@ import java.util.Map;
 public class OpenWeatherMapMeasurementGetDto {
 
     private LocalDateTime measuredAt;
-    private double temp;
+    private double temperature;
 
     @JsonProperty("main")
     private void extractTemperature(Map<String, String> tempMeasurements) {
-        this.temp = Double.parseDouble(tempMeasurements.get("temp"));
+        this.temperature = Double.parseDouble(tempMeasurements.get("temp"));
     }
 
     @JsonProperty("dt_txt")
@@ -25,8 +25,8 @@ public class OpenWeatherMapMeasurementGetDto {
         return measuredAt;
     }
 
-    public double getTemp() {
-        return temp;
+    public double getTemperature() {
+        return temperature;
     }
 
 }

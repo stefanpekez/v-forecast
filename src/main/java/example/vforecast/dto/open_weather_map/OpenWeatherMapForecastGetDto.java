@@ -8,15 +8,9 @@ public class OpenWeatherMapForecastGetDto {
 
     @JsonProperty("list")
     private List<OpenWeatherMapMeasurementGetDto> measurements;
-    @JsonProperty("city")
-    private OpenWeatherMapCityGetDto city;
 
     public List<OpenWeatherMapMeasurementGetDto> getMeasurements() {
         return measurements;
-    }
-
-    public OpenWeatherMapCityGetDto getCity() {
-        return city;
     }
 
 }
