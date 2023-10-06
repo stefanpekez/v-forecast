@@ -15,3 +15,7 @@ spring:
   h2:
     console:
       enabled: true
+
+open-weather-map:
+  api-key: "f6f356dc06967143832d9efe910958f5"
+  units: metric
