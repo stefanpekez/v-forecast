@@ -57,7 +57,7 @@ public class OpenWeatherMapServiceImpl implements OpenWeatherMapService {
     private List<TemperatureMeasurementCreateDto> extractTemperatureMeasurements(OpenWeatherMapForecastGetDto openWeatherMapForecast) {
         return openWeatherMapForecast.getMeasurements()
                 .stream()
-                .map(m -> new TemperatureMeasurementCreateDto(m.getTemp(), m.getMeasuredAt()))
+                .map(m -> new TemperatureMeasurementCreateDto(m.getTemperature(), m.getMeasuredAt()))
                 .toList();
     }
 
