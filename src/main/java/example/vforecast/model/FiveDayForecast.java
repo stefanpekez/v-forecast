@@ -1,5 +1,6 @@
 package example.vforecast.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,7 +18,7 @@ public class FiveDayForecast {
     private Long id;
     @OneToOne(optional = false)
     private City city;
-    @OneToMany(mappedBy = "fiveDayForecast")
+    @OneToMany(mappedBy = "fiveDayForecast", cascade = CascadeType.ALL)
     private List<TemperatureMeasurement> temperatureMeasurements;
 
     public FiveDayForecast() {

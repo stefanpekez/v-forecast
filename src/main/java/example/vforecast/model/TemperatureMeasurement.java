@@ -26,6 +26,11 @@ public class TemperatureMeasurement {
     public TemperatureMeasurement() {
     }
 
+    public TemperatureMeasurement(double temperature, LocalDateTime measuredAt) {
+        this.temperature = temperature;
+        this.measuredAt = measuredAt;
+    }
+
     public TemperatureMeasurement(double temperature, LocalDateTime measuredAt, FiveDayForecast fiveDayForecast) {
         this.temperature = temperature;
         this.measuredAt = measuredAt;
