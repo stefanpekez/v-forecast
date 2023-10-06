@@ -11,5 +11,6 @@ public interface FiveDayForecastService {
 
     void save(CityGetDto city, List<TemperatureMeasurementCreateDto> temperatureMeasurementDtos);
     FiveDayForecastGetDto saveMeasurements(Long forecastId, List<TemperatureMeasurement> temperatureMeasurements);
+    FiveDayForecastGetDto findByCityId(Long cityId);
 
 }

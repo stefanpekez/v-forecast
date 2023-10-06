@@ -52,4 +52,13 @@ public class FiveDayForecastServiceImpl implements FiveDayForecastService {
         return FiveDayForecastMapper.toDto(this.fiveDayForecastRepository.save(fiveDayForecast));
     }
 
+    @Override
+    public FiveDayForecastGetDto findByCityId(Long cityId) {
+        FiveDayForecast forecast = this.fiveDayForecastRepository.findByCityId(cityId).orElseThrow(() ->
+                new NoSuchElementException("Forecast not found")
+        );
+
+        return FiveDayForecastMapper.toDto(forecast);
+    }
+
 }
