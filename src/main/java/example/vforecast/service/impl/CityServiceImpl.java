@@ -6,6 +6,7 @@ import example.vforecast.dto.five_day_forecast.FiveDayForecastGetDto;
 import example.vforecast.dto.temperature_measurement.TemperatureMeasurementGetDto;
 import example.vforecast.mapper.CityMapper;
 import example.vforecast.model.City;
+import example.vforecast.model.TemperatureMeasurement;
 import example.vforecast.repository.CityRepository;
 import example.vforecast.service.CityService;
 import example.vforecast.service.FiveDayForecastService;
@@ -37,51 +38,45 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public List<CityAverageTempGetDto> findAverageTemperatures() {
+    public List<CityAverageTempGetDto> findAverageTemperatures(LocalDateTime from, LocalDateTime to) {
         List<CityAverageTempGetDto> cities = new ArrayList<>();
 
-        double totalTemperature = 0;
-        double averageTemperature;
-
         for (City city: this.cityRepository.findAll()) {
-            FiveDayForecastGetDto forecast = this.forecastService.findByCityId(city.getId());
-            for (TemperatureMeasurementGetDto tempMeasurement: forecast.temperatureMeasurements()) {
-                totalTemperature += tempMeasurement.temperature();
-            }
-            averageTemperature = totalTemperature / forecast.temperatureMeasurements().size();
-
-            LocalDateTime from = forecast.temperatureMeasurements().get(0).measuredAt();
-            LocalDateTime to = forecast.temperatureMeasurements().get(39).measuredAt();
-            CityAverageTempGetDto cityAverageTemp = CityMapper.toAverageTempDto(city, averageTemperature, from, to);
-            cities.add(cityAverageTemp);
-            totalTemperature = 0;
+            CityAverageTempGetDto avgTemp = getAverageTemperatureForCity(from, to, city);
+            cities.add(avgTemp);
         }
 
         return cities;
     }
 
     @Override
-    public List<CityAverageTempGetDto> findAverageTemperatures(String cityNames) {
+    public List<CityAverageTempGetDto> findAverageTemperatures(LocalDateTime from, LocalDateTime to, String cityNames) {
         List<CityAverageTempGetDto> cities = new ArrayList<>();
 
-        double totalTemperature = 0;
-        double averageTemperature;
-
         for (City city: findCitiesByCityNames(cityNames)) {
-            FiveDayForecastGetDto forecast = this.forecastService.findByCityId(city.getId());
-            for (TemperatureMeasurementGetDto tempMeasurement: forecast.temperatureMeasurements()) {
-                totalTemperature += tempMeasurement.temperature();
-            }
-            averageTemperature = totalTemperature / forecast.temperatureMeasurements().size();
-
-            LocalDateTime from = forecast.temperatureMeasurements().get(0).measuredAt();
-            LocalDateTime to = forecast.temperatureMeasurements().get(39).measuredAt();
-            CityAverageTempGetDto cityAverageTemp = CityMapper.toAverageTempDto(city, averageTemperature, from, to);
-            cities.add(cityAverageTemp);
-            totalTemperature = 0;
+            CityAverageTempGetDto avgTemp = getAverageTemperatureForCity(from, to, city);
+            cities.add(avgTemp);
         }
 
         return cities;
+    }
+
+    private CityAverageTempGetDto getAverageTemperatureForCity(LocalDateTime from, LocalDateTime to, City city) {
+        FiveDayForecastGetDto forecast = this.forecastService.findByCityId(city.getId());
+
+        double averageTemperature = calculateAverageTemperature(forecast.temperatureMeasurements());
+
+        return CityMapper.toAverageTempDto(city, averageTemperature, from, to);
+    }
+
+    private double calculateAverageTemperature(List<TemperatureMeasurementGetDto> tempMeasurements) {
+        double totalTemperature = 0;
+        double averageTemperature;
+
+        for (TemperatureMeasurementGetDto tm: tempMeasurements) {
+            totalTemperature += tm.temperature();
+        }
+        return totalTemperature / tempMeasurements.size();
     }
 
     private List<City> findCitiesByCityNames(String cityNames) {

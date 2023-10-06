@@ -32,10 +32,10 @@ public class CityController {
                                                                @RequestParam LocalDateTime to,
                                                                @RequestParam Optional<String> cities) {
         if (cities.isPresent()) {
-            return this.cityService.findAverageTemperatures(cities.get());
+            return this.cityService.findAverageTemperatures(from, to, cities.get());
         }
 
-        return this.cityService.findAverageTemperatures();
+        return this.cityService.findAverageTemperatures(from, to);
     }
 
 }
