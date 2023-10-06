@@ -1,13 +1,9 @@
 package example.vforecast.service.impl;
 
 import example.vforecast.dto.CityGetDto;
-import example.vforecast.dto.FiveDayForecastCreateDto;
 import example.vforecast.dto.FiveDayForecastGetDto;
 import example.vforecast.dto.OpenWeatherMapForecastGetDto;
-import example.vforecast.dto.OpenWeatherMapMeasurementGetDto;
 import example.vforecast.dto.TemperatureMeasurementCreateDto;
-import example.vforecast.model.FiveDayForecast;
-import example.vforecast.model.TemperatureMeasurement;
 import example.vforecast.service.CityService;
 import example.vforecast.service.FiveDayForecastService;
 import example.vforecast.service.OpenWeatherMapService;
@@ -16,7 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -38,31 +33,30 @@ public class OpenWeatherMapServiceImpl implements OpenWeatherMapService {
 
     @Override
     @PostConstruct
-    public void findFiveDayForecast() {
-        WebClient webClient = WebClient.create();
-
+    public void saveFiveDayForecastData() {
         for (CityGetDto city: this.cityService.findAll()) {
-            String cityInfo = city.name() + "," + city.countryCode();
+            OpenWeatherMapForecastGetDto openWeatherMapForecast = getOpenWeatherMapForecastForCity(city);
 
-            WebClient.ResponseSpec responseSpec = webClient
-                    .get()
-                    .uri("api.openweathermap.org/data/2.5/forecast?appid=" + apiKey + "&q=" + cityInfo + "&units=" + units)
-                    .retrieve();
+            List<TemperatureMeasurementCreateDto> tempMeasurements = extractTemperatureMeasurements(openWeatherMapForecast);
 
-            OpenWeatherMapForecastGetDto forecastGetDto = responseSpec.bodyToMono(OpenWeatherMapForecastGetDto.class).block();
-
-            FiveDayForecastCreateDto forecastCreateDto = new FiveDayForecastCreateDto(city);
-            FiveDayForecastGetDto fiveDayForecastGetDto = this.forecastService.save(forecastCreateDto);
-
-            List<TemperatureMeasurementCreateDto> tempMeasurements = mapOpenWeatherMeasurementsToTemperatureMeasurements(forecastGetDto.getMeasurements());
-
-            this.forecastService.saveMeasurements(fiveDayForecastGetDto.id(), tempMeasurements);
+            this.forecastService.save(city, tempMeasurements);
         }
-
     }
 
-    private List<TemperatureMeasurementCreateDto> mapOpenWeatherMeasurementsToTemperatureMeasurements(List<OpenWeatherMapMeasurementGetDto> openWeatherMeasurements) {
-        return openWeatherMeasurements
+    private OpenWeatherMapForecastGetDto getOpenWeatherMapForecastForCity(CityGetDto city) {
+        String cityInfo = city.name() + "," + city.countryCode();
+
+        WebClient webClient = WebClient.create();
+        WebClient.ResponseSpec responseSpec = webClient
+                .get()
+                .uri("api.openweathermap.org/data/2.5/forecast?appid=" + apiKey + "&q=" + cityInfo + "&units=" + units)
+                .retrieve();
+
+        return responseSpec.bodyToMono(OpenWeatherMapForecastGetDto.class).block();
+    }
+
+    private List<TemperatureMeasurementCreateDto> extractTemperatureMeasurements(OpenWeatherMapForecastGetDto openWeatherMapForecast) {
+        return openWeatherMapForecast.getMeasurements()
                 .stream()
                 .map(m -> new TemperatureMeasurementCreateDto(m.getTemp(), m.getMeasuredAt()))
                 .toList();
