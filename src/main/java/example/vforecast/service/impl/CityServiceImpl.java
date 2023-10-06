@@ -17,6 +17,7 @@ public class CityServiceImpl implements CityService {
         this.cityRepository = cityRepository;
     }
 
+    @Override
     public List<CityGetDto> findAll() {
         return this.cityRepository.findAll()
                 .stream()
