@@ -2,9 +2,6 @@ package example.vforecast.service.impl;
 
 import example.vforecast.dto.CityGetDto;
 import example.vforecast.dto.OpenWeatherMapForecastGetDto;
-import example.vforecast.mapper.CityMapper;
-import example.vforecast.mapper.FiveDayForecast;
-import example.vforecast.model.City;
 import example.vforecast.service.CityService;
 import example.vforecast.service.OpenWeatherMapService;
 import jakarta.annotation.PostConstruct;

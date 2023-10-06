@@ -1,6 +1,5 @@
-package example.vforecast.mapper;
+package example.vforecast.model;
 
-import example.vforecast.model.City;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
