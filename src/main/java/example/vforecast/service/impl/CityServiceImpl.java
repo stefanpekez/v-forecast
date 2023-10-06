@@ -11,8 +11,11 @@ import example.vforecast.service.CityService;
 import example.vforecast.service.FiveDayForecastService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class CityServiceImpl implements CityService {
@@ -39,6 +42,7 @@ public class CityServiceImpl implements CityService {
 
         double totalTemperature = 0;
         double averageTemperature;
+
         for (City city: this.cityRepository.findAll()) {
             FiveDayForecastGetDto forecast = this.forecastService.findByCityId(city.getId());
             for (TemperatureMeasurementGetDto tempMeasurement: forecast.temperatureMeasurements()) {
@@ -46,17 +50,53 @@ public class CityServiceImpl implements CityService {
             }
             averageTemperature = totalTemperature / forecast.temperatureMeasurements().size();
 
-
-            CityAverageTempGetDto cityAverageTemp = CityMapper.toAverageTempDto(city, averageTemperature);
+            LocalDateTime from = forecast.temperatureMeasurements().get(0).measuredAt();
+            LocalDateTime to = forecast.temperatureMeasurements().get(39).measuredAt();
+            CityAverageTempGetDto cityAverageTemp = CityMapper.toAverageTempDto(city, averageTemperature, from, to);
             cities.add(cityAverageTemp);
+            totalTemperature = 0;
         }
 
         return cities;
     }
 
     @Override
-    public List<CityAverageTempGetDto> findAverageTemperatures(String cities) {
-        return null;
+    public List<CityAverageTempGetDto> findAverageTemperatures(String cityNames) {
+        List<CityAverageTempGetDto> cities = new ArrayList<>();
+
+        double totalTemperature = 0;
+        double averageTemperature;
+
+        for (City city: findCitiesByCityNames(cityNames)) {
+            FiveDayForecastGetDto forecast = this.forecastService.findByCityId(city.getId());
+            for (TemperatureMeasurementGetDto tempMeasurement: forecast.temperatureMeasurements()) {
+                totalTemperature += tempMeasurement.temperature();
+            }
+            averageTemperature = totalTemperature / forecast.temperatureMeasurements().size();
+
+            LocalDateTime from = forecast.temperatureMeasurements().get(0).measuredAt();
+            LocalDateTime to = forecast.temperatureMeasurements().get(39).measuredAt();
+            CityAverageTempGetDto cityAverageTemp = CityMapper.toAverageTempDto(city, averageTemperature, from, to);
+            cities.add(cityAverageTemp);
+            totalTemperature = 0;
+        }
+
+        return cities;
+    }
+
+    private List<City> findCitiesByCityNames(String cityNames) {
+        String[] cities = cityNames.split(",");
+
+        List<City> foundCities = new ArrayList<>();
+        for (String cityName: cities) {
+            City city = this.cityRepository.findByName(cityName).orElseThrow(() ->
+                    new NoSuchElementException("City not found")
+            );
+
+            foundCities.add(city);
+        }
+
+        return foundCities;
     }
 
 }

@@ -16,12 +16,12 @@ public class CityMapper {
         return new City(city.id(), city.name(), city.countryCode());
     }
 
-    public static CityAverageTempGetDto toAverageTempDto(City city, double averageTemperature) {
+    public static CityAverageTempGetDto toAverageTempDto(City city, double averageTemperature, LocalDateTime from, LocalDateTime to) {
         return new CityAverageTempGetDto(
                 toDto(city),
                 averageTemperature,
-                LocalDateTime.now(),
-                LocalDateTime.now()
+                from,
+                to
         );
     }
 
