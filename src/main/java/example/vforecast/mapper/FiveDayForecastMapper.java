@@ -1,7 +1,7 @@
 package example.vforecast.mapper;
 
-import example.vforecast.dto.FiveDayForecastCreateDto;
-import example.vforecast.dto.FiveDayForecastGetDto;
+import example.vforecast.dto.five_day_forecast.FiveDayForecastCreateDto;
+import example.vforecast.dto.five_day_forecast.FiveDayForecastGetDto;
 import example.vforecast.model.FiveDayForecast;
 
 public class FiveDayForecastMapper {

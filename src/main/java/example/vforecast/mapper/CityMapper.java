@@ -1,6 +1,6 @@
 package example.vforecast.mapper;
 
-import example.vforecast.dto.CityGetDto;
+import example.vforecast.dto.city.CityGetDto;
 import example.vforecast.model.City;
 
 public class CityMapper {

@@ -1,4 +1,4 @@
-package example.vforecast.dto;
+package example.vforecast.dto.temperature_measurement;
 
 import java.time.LocalDateTime;
 

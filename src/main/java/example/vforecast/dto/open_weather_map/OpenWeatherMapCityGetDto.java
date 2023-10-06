@@ -1,4 +1,4 @@
-package example.vforecast.dto;
+package example.vforecast.dto.open_weather_map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

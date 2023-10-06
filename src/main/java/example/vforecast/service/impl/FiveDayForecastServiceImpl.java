@@ -1,9 +1,8 @@
 package example.vforecast.service.impl;
 
-import example.vforecast.dto.CityGetDto;
-import example.vforecast.dto.FiveDayForecastCreateDto;
-import example.vforecast.dto.FiveDayForecastGetDto;
-import example.vforecast.dto.TemperatureMeasurementCreateDto;
+import example.vforecast.dto.city.CityGetDto;
+import example.vforecast.dto.five_day_forecast.FiveDayForecastGetDto;
+import example.vforecast.dto.temperature_measurement.TemperatureMeasurementCreateDto;
 import example.vforecast.mapper.CityMapper;
 import example.vforecast.mapper.FiveDayForecastMapper;
 import example.vforecast.mapper.TemperatureMeasurementMapper;

@@ -1,6 +1,6 @@
 package example.vforecast.service.impl;
 
-import example.vforecast.dto.CityGetDto;
+import example.vforecast.dto.city.CityGetDto;
 import example.vforecast.mapper.CityMapper;
 import example.vforecast.repository.CityRepository;
 import example.vforecast.service.CityService;

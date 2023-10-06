@@ -1,6 +1,6 @@
 package example.vforecast.mapper;
 
-import example.vforecast.dto.TemperatureMeasurementCreateDto;
+import example.vforecast.dto.temperature_measurement.TemperatureMeasurementCreateDto;
 import example.vforecast.model.TemperatureMeasurement;
 
 public class TemperatureMeasurementMapper {
