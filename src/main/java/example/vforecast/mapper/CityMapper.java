@@ -9,4 +9,8 @@ public class CityMapper {
         return new CityGetDto(city.getId(), city.getName(), city.getCountryCode());
     }
 
+    public static City toEntity(CityGetDto city) {
+        return new City(city.id(), city.name(), city.countryCode());
+    }
+
 }
