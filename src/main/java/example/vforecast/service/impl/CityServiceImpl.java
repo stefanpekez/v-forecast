@@ -5,6 +5,7 @@ import example.vforecast.dto.city.CityGetDto;
 import example.vforecast.dto.five_day_forecast.FiveDayForecastGetDto;
 import example.vforecast.dto.temperature_measurement.TemperatureMeasurementGetDto;
 import example.vforecast.exception.InvalidRequestedTimePeriodException;
+import example.vforecast.exception.InvalidSortOrderTypeException;
 import example.vforecast.exception.ResourceNotFoundException;
 import example.vforecast.mapper.CityMapper;
 import example.vforecast.model.City;
@@ -114,7 +115,7 @@ public class CityServiceImpl implements CityService {
         } else if (sort.equals("desc")) {
             cities.sort(Comparator.comparing(CityAverageTempGetDto::averageTemperature).reversed());
         } else {
-            throw new RuntimeException("Invalid sort order type");
+            throw new InvalidSortOrderTypeException();
         }
 
         return cities;
