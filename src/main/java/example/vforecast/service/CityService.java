@@ -5,11 +5,12 @@ import example.vforecast.dto.city.CityGetDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface CityService {
 
     List<CityGetDto> findAll();
-    List<CityAverageTempGetDto> findAverageTemperatures(LocalDateTime from, LocalDateTime to);
-    List<CityAverageTempGetDto> findAverageTemperatures(LocalDateTime from, LocalDateTime to, String cityNames);
+    List<CityAverageTempGetDto> findAverageTemperatures(LocalDateTime from, LocalDateTime to, Optional<String> sortOrder);
+    List<CityAverageTempGetDto> findAverageTemperatures(LocalDateTime from, LocalDateTime to, String cityNames, Optional<String> sortOrder);
 
 }

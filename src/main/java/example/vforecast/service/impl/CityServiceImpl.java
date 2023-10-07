@@ -16,7 +16,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CityServiceImpl implements CityService {
@@ -38,7 +40,7 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public List<CityAverageTempGetDto> findAverageTemperatures(LocalDateTime from, LocalDateTime to) {
+    public List<CityAverageTempGetDto> findAverageTemperatures(LocalDateTime from, LocalDateTime to, Optional<String> sort) {
         List<CityAverageTempGetDto> cities = new ArrayList<>();
 
         for (City city: this.cityRepository.findAll()) {
@@ -46,19 +48,23 @@ public class CityServiceImpl implements CityService {
             cities.add(avgTemp);
         }
 
-        return cities;
+        return sort
+                .map(s -> sortCities(cities, s))
+                .orElse(cities);
     }
 
     @Override
-    public List<CityAverageTempGetDto> findAverageTemperatures(LocalDateTime from, LocalDateTime to, String cityNames) {
+    public List<CityAverageTempGetDto> findAverageTemperatures(LocalDateTime from, LocalDateTime to, String cityNames, Optional<String> sort) {
         List<CityAverageTempGetDto> cities = new ArrayList<>();
 
         for (City city: findCitiesByCityNames(cityNames)) {
             CityAverageTempGetDto avgTemp = getAverageTemperatureForCity(from, to, city);
             cities.add(avgTemp);
         }
-
-        return cities;
+        
+        return sort
+                .map(s -> sortCities(cities, s))
+                .orElse(cities);
     }
 
     private CityAverageTempGetDto getAverageTemperatureForCity(LocalDateTime from, LocalDateTime to, City city) {
@@ -99,6 +105,19 @@ public class CityServiceImpl implements CityService {
         }
 
         return foundCities;
+    }
+
+    private List<CityAverageTempGetDto> sortCities(List<CityAverageTempGetDto> cities, String sort) {
+
+        if (sort.equals("asc")) {
+            cities.sort(Comparator.comparing(CityAverageTempGetDto::averageTemperature));
+        } else if (sort.equals("desc")) {
+            cities.sort(Comparator.comparing(CityAverageTempGetDto::averageTemperature).reversed());
+        } else {
+            throw new RuntimeException("Invalid sort order type");
+        }
+
+        return cities;
     }
 
 }
