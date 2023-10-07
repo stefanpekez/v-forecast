@@ -31,12 +31,18 @@ http://localhost:8080/api
 ```
 ## About the Service
 
-The service is a simple REST API that uses data gathered from the [OpenWeatherMap API](https://openweathermap.org/api) to calculate average temperatures. It uses an in-memory database (H2) to store the data. You can access the database on the following url ```http://localhost:8080/api/h2-console```.
+The service is a simple REST API that uses data gathered from the [OpenWeatherMap API](https://openweathermap.org/api) to calculate average temperatures. It uses an in-memory database (H2) to store the data. You can access the database on the following url:
+```
+http://localhost:8080/api/h2-console
+```
 
 When you open up the url you will see a prompt to login:
 
+![h2-console](https://github.com/stefanpekez/v-forecast/assets/93758741/c5dfed41-a5a5-4bd9-994d-676d87d87fb1)
 
-Make sure that the console fields match the ones on the picture and then press connect to access the database. If you are successful you will be greeted with this screen:
+Make sure that the h2-console fields match the ones on the picture and then press connect to access the database. If you are successful you will be greeted with this screen:
+
+![h2-homepage](https://github.com/stefanpekez/v-forecast/assets/93758741/354ed7ab-6add-48a5-9b8a-9d137700ebff)
 
 ## API
 
