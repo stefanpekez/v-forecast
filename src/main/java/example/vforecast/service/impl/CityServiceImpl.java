@@ -4,6 +4,8 @@ import example.vforecast.dto.city.CityAverageTempGetDto;
 import example.vforecast.dto.city.CityGetDto;
 import example.vforecast.dto.five_day_forecast.FiveDayForecastGetDto;
 import example.vforecast.dto.temperature_measurement.TemperatureMeasurementGetDto;
+import example.vforecast.exception.InvalidRequestedTimePeriodException;
+import example.vforecast.exception.ResourceNotFoundException;
 import example.vforecast.mapper.CityMapper;
 import example.vforecast.model.City;
 import example.vforecast.repository.CityRepository;
@@ -15,7 +17,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 public class CityServiceImpl implements CityService {
@@ -54,11 +55,6 @@ public class CityServiceImpl implements CityService {
 
         for (City city: findCitiesByCityNames(cityNames)) {
             CityAverageTempGetDto avgTemp = getAverageTemperatureForCity(from, to, city);
-
-            if (avgTemp == null) {
-                return null;
-            }
-
             cities.add(avgTemp);
         }
 
@@ -69,7 +65,7 @@ public class CityServiceImpl implements CityService {
         FiveDayForecastGetDto forecast = this.forecastService.findByCityId(city.getId());
 
         if (!TemperatureMeasurementUtil.isRequestedTimePeriodValid(from, to, forecast.temperatureMeasurements())) {
-            return null;
+            throw new InvalidRequestedTimePeriodException("Requested time period doesn't fit in forecast range");
         }
 
         double averageTemperature = calculateAverageTemperature(from, to, forecast.temperatureMeasurements());
@@ -96,7 +92,7 @@ public class CityServiceImpl implements CityService {
         List<City> foundCities = new ArrayList<>();
         for (String cityName: cities) {
             City city = this.cityRepository.findByName(cityName).orElseThrow(() ->
-                    new NoSuchElementException("City not found")
+                    new ResourceNotFoundException("City with name: '" + cityName + "' not found")
             );
 
             foundCities.add(city);

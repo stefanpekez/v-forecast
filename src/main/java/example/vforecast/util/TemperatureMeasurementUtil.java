@@ -1,6 +1,7 @@
 package example.vforecast.util;
 
 import example.vforecast.dto.temperature_measurement.TemperatureMeasurementGetDto;
+import example.vforecast.exception.InvalidRequestedTimePeriodException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,8 +24,8 @@ public class TemperatureMeasurementUtil {
         LocalDateTime start = tempMeasurements.get(0).measuredAt();
         LocalDateTime end = tempMeasurements.get(39).measuredAt();
 
-        if (from.isAfter(to) || to.isBefore(from)) {
-            return false;
+        if (from.isAfter(to)) {
+            throw new InvalidRequestedTimePeriodException("'from' and 'to' dates must be in chronological order or the same");
         }
 
         return isAfterOrEqual(from, start) && isBeforeOrEqual(to, end);
