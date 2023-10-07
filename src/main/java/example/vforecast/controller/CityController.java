@@ -30,12 +30,13 @@ public class CityController {
     @GetMapping("/average-temperature")
     public List<CityAverageTempGetDto> findAverageTemperatures(@RequestParam LocalDateTime from,
                                                                @RequestParam LocalDateTime to,
-                                                               @RequestParam Optional<String> cities) {
+                                                               @RequestParam Optional<String> cities,
+                                                               @RequestParam Optional<String> sort) {
         if (cities.isPresent()) {
-            return this.cityService.findAverageTemperatures(from, to, cities.get());
+            return this.cityService.findAverageTemperatures(from, to, cities.get(), sort);
         }
 
-        return this.cityService.findAverageTemperatures(from, to);
+        return this.cityService.findAverageTemperatures(from, to, sort);
     }
 
 }
