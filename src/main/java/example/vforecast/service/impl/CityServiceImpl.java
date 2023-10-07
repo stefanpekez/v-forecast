@@ -10,6 +10,7 @@ import example.vforecast.model.TemperatureMeasurement;
 import example.vforecast.repository.CityRepository;
 import example.vforecast.service.CityService;
 import example.vforecast.service.FiveDayForecastService;
+import example.vforecast.util.TemperatureMeasurementUtil;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -64,19 +65,23 @@ public class CityServiceImpl implements CityService {
     private CityAverageTempGetDto getAverageTemperatureForCity(LocalDateTime from, LocalDateTime to, City city) {
         FiveDayForecastGetDto forecast = this.forecastService.findByCityId(city.getId());
 
-        double averageTemperature = calculateAverageTemperature(forecast.temperatureMeasurements());
+        double averageTemperature = calculateAverageTemperature(from, to, forecast.temperatureMeasurements());
 
         return CityMapper.toAverageTempDto(city, averageTemperature, from, to);
     }
 
-    private double calculateAverageTemperature(List<TemperatureMeasurementGetDto> tempMeasurements) {
+    private double calculateAverageTemperature(LocalDateTime from, LocalDateTime to, List<TemperatureMeasurementGetDto> tempMeasurements) {
         double totalTemperature = 0;
         double averageTemperature;
+        int counter = 0;
 
         for (TemperatureMeasurementGetDto tm: tempMeasurements) {
-            totalTemperature += tm.temperature();
+            if (TemperatureMeasurementUtil.isMeasuredAtBetweenOrEqualToDateRange(tm.measuredAt(), from, to)) {
+                totalTemperature += tm.temperature();
+                ++counter;
+            }
         }
-        return totalTemperature / tempMeasurements.size();
+        return totalTemperature / counter;
     }
 
     private List<City> findCitiesByCityNames(String cityNames) {
