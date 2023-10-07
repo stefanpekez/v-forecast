@@ -6,7 +6,6 @@ import example.vforecast.dto.five_day_forecast.FiveDayForecastGetDto;
 import example.vforecast.dto.temperature_measurement.TemperatureMeasurementGetDto;
 import example.vforecast.mapper.CityMapper;
 import example.vforecast.model.City;
-import example.vforecast.model.TemperatureMeasurement;
 import example.vforecast.repository.CityRepository;
 import example.vforecast.service.CityService;
 import example.vforecast.service.FiveDayForecastService;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -72,7 +70,6 @@ public class CityServiceImpl implements CityService {
 
     private double calculateAverageTemperature(LocalDateTime from, LocalDateTime to, List<TemperatureMeasurementGetDto> tempMeasurements) {
         double totalTemperature = 0;
-        double averageTemperature;
         int counter = 0;
 
         for (TemperatureMeasurementGetDto tm: tempMeasurements) {
