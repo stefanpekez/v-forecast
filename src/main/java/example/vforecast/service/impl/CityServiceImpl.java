@@ -54,6 +54,11 @@ public class CityServiceImpl implements CityService {
 
         for (City city: findCitiesByCityNames(cityNames)) {
             CityAverageTempGetDto avgTemp = getAverageTemperatureForCity(from, to, city);
+
+            if (avgTemp == null) {
+                return null;
+            }
+
             cities.add(avgTemp);
         }
 
@@ -62,6 +67,10 @@ public class CityServiceImpl implements CityService {
 
     private CityAverageTempGetDto getAverageTemperatureForCity(LocalDateTime from, LocalDateTime to, City city) {
         FiveDayForecastGetDto forecast = this.forecastService.findByCityId(city.getId());
+
+        if (!TemperatureMeasurementUtil.isRequestedTimePeriodValid(from, to, forecast.temperatureMeasurements())) {
+            return null;
+        }
 
         double averageTemperature = calculateAverageTemperature(from, to, forecast.temperatureMeasurements());
 
