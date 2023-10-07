@@ -7,7 +7,14 @@ import example.vforecast.model.FiveDayForecast;
 public class FiveDayForecastMapper {
 
     public static FiveDayForecastGetDto toDto(FiveDayForecast fiveDayForecast) {
-        return new FiveDayForecastGetDto(fiveDayForecast.getId(), CityMapper.toDto(fiveDayForecast.getCity()));
+        return new FiveDayForecastGetDto(
+                fiveDayForecast.getId(),
+                CityMapper.toDto(fiveDayForecast.getCity()),
+                fiveDayForecast.getTemperatureMeasurements()
+                        .stream()
+                        .map(TemperatureMeasurementMapper::toDto)
+                        .toList()
+        );
     }
 
     public static FiveDayForecast toEntity(FiveDayForecastCreateDto createDto) {
