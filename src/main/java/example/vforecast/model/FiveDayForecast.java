@@ -28,6 +28,11 @@ public class FiveDayForecast {
         this.city = city;
     }
 
+    public FiveDayForecast(Long id, City city) {
+        this.id = id;
+        this.city = city;
+    }
+
     public FiveDayForecast(City city, List<TemperatureMeasurement> temperatureMeasurements) {
         this.city = city;
         this.temperatureMeasurements = temperatureMeasurements;
