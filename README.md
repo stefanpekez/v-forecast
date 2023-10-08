@@ -60,6 +60,16 @@ Find all of the available cities stored in the database for which you can calcul
 http://localhost:8080/api/cities
 ```
 
+### (GET Method) Find the time span of a forecast
+Find the date time of the first and last temperature measurement for a specific forecast
+
+```
+http://localhost:8080/api/five-day-forecasts/time-span/{forecastId}
+```
+**Parameters:**
+
+``` forecastId ``` - **required** - Id of the forecast you want to find the time span for
+
 ### (GET Method) Find average temperature of cities
 Finds the average temperature for every city. Must have a time period specified. The time period must be inside the range of the next 5 days. The reason is because the temperature measurements that are used are gathered from the [5 day forecast](https://openweathermap.org/forecast5) from OpenWeatherMap. Example:
 
@@ -67,11 +77,11 @@ Finds the average temperature for every city. Must have a time period specified.
 http://localhost:8080/api/cities/average-temperature?from={from}&to={to}
 ```
 
-Parameters:
+**Parameters:**
 
-``` from ``` - **required** - Start of the time period for which we calculate the average temperature of a city. It must be in the scope of the next 5 days. Use the format: ``` yyyy-MM-dd'T'HH:mm ```. For example: ```2023-10-12T06:00```
+``` from ``` - **required** - Start of the time period for which we calculate the average temperature of a city. It must be in the scope of the next 5 days. It must be in an interval of threes starting from 00:00 (12AM), always set minutes as 00. Use the format: ``` yyyy-MM-dd'T'HH:mm ```. For example: ```2023-10-12T06:00```, ```2023-10-13T18:00```
 
-``` to ``` - **required** - End of the time period for which we calculate the average temperature of a city. It must be in the scope of the next 5 days. Use the format: ``` yyyy-MM-dd'T'HH:mm ```. For example: ```2023-10-12T06:00```
+``` to ``` - **required** - End of the time period for which we calculate the average temperature of a city. It must be in the scope of the next 5 days. It must be in an interval of threes starting from 00:00 (12AM), always set minutes as 00. Use the format: ``` yyyy-MM-dd'T'HH:mm ```. For example: ```2023-10-12T06:00```, ```2023-10-13T18:00```
 
 ``` cities ```- *optional* - Cities for which we want to calculate the average temperature. If left empty it calculates the average temperature for every city. To enter the names of multiple cities use a comma for separation. For example: 
 ```
