@@ -31,6 +31,12 @@ public class TemperatureMeasurement {
         this.measuredAt = measuredAt;
     }
 
+    public TemperatureMeasurement(Long id, double temperature, LocalDateTime measuredAt) {
+        this.id = id;
+        this.temperature = temperature;
+        this.measuredAt = measuredAt;
+    }
+
     public TemperatureMeasurement(double temperature, LocalDateTime measuredAt, FiveDayForecast fiveDayForecast) {
         this.temperature = temperature;
         this.measuredAt = measuredAt;
