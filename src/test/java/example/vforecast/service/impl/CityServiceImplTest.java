@@ -90,7 +90,7 @@ class CityServiceImplTest {
         given(forecastService.findByCityId(anyLong())).willReturn(forecastGetDto);
         LocalDateTime from = LocalDateTime.parse("2023-10-10T18:00");
 
-        List<CityAverageTempGetDto> cityAverageTemps = cityService.findAverageTemperatures(from, from.plusHours(3 * 39), Optional.empty());
+        List<CityAverageTempGetDto> cityAverageTemps = cityService.findAverageTemperaturesForAllCities(from, from.plusHours(3 * 39), Optional.empty());
 
         assertThat(cityAverageTemps.size()).isEqualTo(3);
         assertThat(cityAverageTemps.get(0).city().id()).isEqualTo(beograd.getId());
