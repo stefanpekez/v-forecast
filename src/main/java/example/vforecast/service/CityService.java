@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface CityService {
 
     List<CityGetDto> findAll();
-    List<CityAverageTempGetDto> findAverageTemperatures(LocalDateTime from, LocalDateTime to, Optional<String> sortOrder);
-    List<CityAverageTempGetDto> findAverageTemperatures(LocalDateTime from, LocalDateTime to, String cityNames, Optional<String> sortOrder);
+    List<CityAverageTempGetDto> findAverageTemperaturesForAllCities(LocalDateTime from, LocalDateTime to, Optional<String> sortOrder);
+    List<CityAverageTempGetDto> findAverageTemperaturesForSpecifiedCities(LocalDateTime from, LocalDateTime to, String cityNames, Optional<String> sortOrder);
 
 }

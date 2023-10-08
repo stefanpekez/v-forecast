@@ -41,7 +41,7 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public List<CityAverageTempGetDto> findAverageTemperatures(LocalDateTime from, LocalDateTime to, Optional<String> sort) {
+    public List<CityAverageTempGetDto> findAverageTemperaturesForAllCities(LocalDateTime from, LocalDateTime to, Optional<String> sort) {
         List<CityAverageTempGetDto> cities = new ArrayList<>();
 
         for (City city: this.cityRepository.findAll()) {
@@ -55,7 +55,7 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public List<CityAverageTempGetDto> findAverageTemperatures(LocalDateTime from, LocalDateTime to, String cityNames, Optional<String> sort) {
+    public List<CityAverageTempGetDto> findAverageTemperaturesForSpecifiedCities(LocalDateTime from, LocalDateTime to, String cityNames, Optional<String> sort) {
         List<CityAverageTempGetDto> cities = new ArrayList<>();
 
         for (City city: findCitiesByCityNames(cityNames)) {

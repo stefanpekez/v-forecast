@@ -2,7 +2,6 @@ package example.vforecast.controller.openapi;
 
 import example.vforecast.dto.city.CityAverageTempGetDto;
 import example.vforecast.dto.city.CityGetDto;
-import example.vforecast.dto.exception.RestApiExceptionGetDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

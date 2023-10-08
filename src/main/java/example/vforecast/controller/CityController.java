@@ -35,10 +35,10 @@ public class CityController implements CityControllerOpenApi {
                                                                @RequestParam Optional<String> cities,
                                                                @RequestParam Optional<String> sort) {
         if (cities.isPresent()) {
-            return this.cityService.findAverageTemperatures(from, to, cities.get(), sort);
+            return this.cityService.findAverageTemperaturesForSpecifiedCities(from, to, cities.get(), sort);
         }
 
-        return this.cityService.findAverageTemperatures(from, to, sort);
+        return this.cityService.findAverageTemperaturesForAllCities(from, to, sort);
     }
 
 }
