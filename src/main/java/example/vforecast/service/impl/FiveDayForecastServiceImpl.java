@@ -2,6 +2,7 @@ package example.vforecast.service.impl;
 
 import example.vforecast.dto.city.CityGetDto;
 import example.vforecast.dto.five_day_forecast.FiveDayForecastGetDto;
+import example.vforecast.dto.five_day_forecast.FiveDayForecastTimeSpanGetDto;
 import example.vforecast.dto.temperature_measurement.TemperatureMeasurementCreateDto;
 import example.vforecast.exception.ResourceNotFoundException;
 import example.vforecast.mapper.CityMapper;
@@ -14,6 +15,7 @@ import example.vforecast.repository.FiveDayForecastRepository;
 import example.vforecast.service.FiveDayForecastService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -59,6 +61,19 @@ public class FiveDayForecastServiceImpl implements FiveDayForecastService {
         );
 
         return FiveDayForecastMapper.toDto(forecast);
+    }
+
+    @Override
+    public FiveDayForecastTimeSpanGetDto findFiveDayForecastTimeSpanByForecastId(Long forecastId) {
+        FiveDayForecast forecast = this.fiveDayForecastRepository.findById(forecastId).orElseThrow(() ->
+                new ResourceNotFoundException("Forecast not found")
+        );
+
+        LocalDateTime from = forecast.getTemperatureMeasurements().get(0).getMeasuredAt();
+        LocalDateTime to = forecast.getTemperatureMeasurements().get(39).getMeasuredAt();
+
+        return new FiveDayForecastTimeSpanGetDto(from, to);
+
     }
 
 }

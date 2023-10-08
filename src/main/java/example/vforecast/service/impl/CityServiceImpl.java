@@ -71,12 +71,9 @@ public class CityServiceImpl implements CityService {
     private CityAverageTempGetDto getAverageTemperatureForCity(LocalDateTime from, LocalDateTime to, City city) {
         FiveDayForecastGetDto forecast = this.forecastService.findByCityId(city.getId());
 
-        if (!TemperatureMeasurementUtil.isRequestedTimePeriodValid(from, to, forecast.temperatureMeasurements())) {
-            throw new InvalidRequestedTimePeriodException("Requested time period doesn't fit in forecast range");
-        }
+        validateRequestedTimePeriod(from, to, forecast.temperatureMeasurements());
 
         double averageTemperature = calculateAverageTemperature(from, to, forecast.temperatureMeasurements());
-
         return CityMapper.toAverageTempDto(city, averageTemperature, from, to);
     }
 
@@ -119,6 +116,16 @@ public class CityServiceImpl implements CityService {
         }
 
         return cities;
+    }
+
+    private void validateRequestedTimePeriod(LocalDateTime from, LocalDateTime to, List<TemperatureMeasurementGetDto> tempMeasurements) {
+        if (!TemperatureMeasurementUtil.isRequestedTimePeriodValid(from, to, tempMeasurements)) {
+            throw new InvalidRequestedTimePeriodException("Requested time period doesn't fit in forecast range");
+        }
+
+        if (!TemperatureMeasurementUtil.isRequestedHourAndMinutesValid(from) || !TemperatureMeasurementUtil.isRequestedHourAndMinutesValid(to)) {
+            throw new InvalidRequestedTimePeriodException("Make sure that the hours are in a interval of three starting from 00 (12 AM). Make sure the minutes are set to 00");
+        }
     }
 
 }

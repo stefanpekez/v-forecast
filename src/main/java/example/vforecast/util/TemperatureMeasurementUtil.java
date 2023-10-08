@@ -8,6 +8,8 @@ import java.util.List;
 
 public class TemperatureMeasurementUtil {
 
+    private static final int[] SUPPORTED_HOURS = {0, 3, 6, 9, 12, 15, 18, 21};
+
     public static boolean isMeasuredAtBetweenOrEqualToDateRange(LocalDateTime measuredAt, LocalDateTime from, LocalDateTime to) {
         return isAfterOrEqual(measuredAt, from) && isBeforeOrEqual(measuredAt, to);
     }
@@ -29,6 +31,18 @@ public class TemperatureMeasurementUtil {
         }
 
         return isAfterOrEqual(from, start) && isBeforeOrEqual(to, end);
+    }
+
+    public static boolean isRequestedHourAndMinutesValid(LocalDateTime dateTime) {
+        boolean isValid = false;
+        for (int hour: SUPPORTED_HOURS) {
+            if (dateTime.getHour() == hour && dateTime.getMinute() == 0) {
+                isValid = true;
+                break;
+            }
+        }
+
+        return isValid;
     }
 
 }

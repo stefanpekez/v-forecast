@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.info.Info;
 
 @OpenAPIDefinition(
         info = @Info(
-                title = "V-forecast - OpenApi specification"
+                title = "V-forecast OpenAPI specification - Stefan Pekez"
         )
 )
 public class OpenApiConfig {
